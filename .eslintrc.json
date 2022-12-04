@@ -1,0 +1,165 @@
+{
+	"env": {
+		"browser": true,
+		"es2022": true,
+		"jest": true,
+		"node": true
+	},
+	"extends": ["next"],
+	"overrides": [
+		{
+			"files": ["src/pages/**/*"],
+			"rules": {
+				"import/no-default-export": "off"
+			}
+		}
+	],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaFeatures": {
+			"impliedStrict": true,
+			"jsx": true
+		},
+		"ecmaVersion": 2022,
+		"sourceType": "module"
+	},
+	"plugins": [
+		"import",
+		"jest",
+		"jsx-a11y",
+		"simple-import-sort",
+		"sort-class-members",
+		"sort-destructure-keys",
+		"prettier",
+		"react",
+		"react-hooks",
+		"unicorn",
+		"unused-imports",
+		"@typescript-eslint"
+	],
+	"root": true,
+	"rules": {
+		"@next/next/no-head-element": "off",
+		"@typescript-eslint/array-type": [
+			"warn",
+			{
+				"default": "generic"
+			}
+		],
+		"@typescript-eslint/consistent-type-imports": [
+			"warn",
+			{
+				"disallowTypeAnnotations": true,
+				/*
+				To be released soon
+				"fixStyle": "inline-type-imports",
+				*/
+				"prefer": "type-imports"
+			}
+		],
+		"@typescript-eslint/member-ordering": [
+			"warn",
+			{
+				"typeLiterals": {
+					"memberTypes": "never",
+					"order": "alphabetically"
+				}
+			}
+		],
+		"@typescript-eslint/method-signature-style": ["warn", "property"],
+		"@typescript-eslint/no-array-constructor": "warn",
+		"@typescript-eslint/no-explicit-any": "warn",
+		"@typescript-eslint/no-for-in-array": "warn",
+		"@typescript-eslint/no-restricted-imports": [
+			"error",
+			{
+				"patterns": ["~/components/*/*", "~/features/*/*", "~/layouts/*/*", "~/styles/*", "~/types/*", "~/utils/*"],
+				"message": "Import from index."
+			}
+		],
+		"@typescript-eslint/no-useless-constructor": "warn",
+		"@typescript-eslint/padding-line-between-statements": [
+			"warn",
+			{
+				"blankLine": "always",
+				"prev": "*",
+				"next": "return"
+			}
+		],
+		"@typescript-eslint/triple-slash-reference": [
+			"warn",
+			{
+				"lib": "never",
+				"path": "never",
+				"types": "never"
+			}
+		],
+		"arrow-body-style": ["warn", "as-needed"],
+		"curly": ["warn", "all"],
+		"dot-notation": "warn",
+		"eqeqeq": ["warn", "smart"],
+		"import/first": "warn",
+		"import/newline-after-import": "warn",
+		"import/no-default-export": "warn",
+		"import/no-duplicates": "warn",
+		"no-case-declarations": "warn",
+		"no-confusing-arrow": "warn",
+		"no-dupe-class-members": "warn",
+		"no-eval": "warn",
+		"no-iterator": "warn",
+		"no-loop-func": "warn",
+		"no-multi-assign": "warn",
+		"no-nested-ternary": "warn",
+		"no-new-func": "warn",
+		"no-new-object": "warn",
+		"no-new-wrappers": "warn",
+		"no-param-reassign": "warn",
+		"no-unneeded-ternary": "warn",
+		"no-useless-escape": "warn",
+		"no-var": "warn",
+		"object-shorthand": "warn",
+		"one-var": ["warn", "never"],
+		"prefer-arrow-callback": "warn",
+		"prefer-const": "warn",
+		"prefer-destructuring": "warn",
+		"prefer-object-spread": "warn",
+		"prefer-rest-params": "warn",
+		"prefer-spread": "warn",
+		"prefer-template": "warn",
+		"prettier/prettier": "warn",
+		"react/jsx-boolean-value": "warn",
+		"react/jsx-fragments": ["warn", "syntax"],
+		"react/jsx-key": "warn",
+		"react/jsx-pascal-case": "warn",
+		"react/jsx-sort-props": [
+			"warn",
+			{
+				"ignoreCase": true
+			}
+		],
+		"simple-import-sort/imports": "warn",
+		"simple-import-sort/exports": "warn",
+		"sort-class-members/sort-class-members": [
+			"warn",
+			{
+				"order": []
+			}
+		],
+		"sort-destructure-keys/sort-destructure-keys": [
+			"warn",
+			{
+				"caseSensitive": false
+			}
+		],
+		"spaced-comment": [
+			"warn",
+			"always",
+			{
+				"markers": ["/"]
+			}
+		],
+		"unicorn/no-array-for-each": "warn",
+		"unused-imports/no-unused-imports": "warn",
+		"yoda": "warn"
+	}
+}

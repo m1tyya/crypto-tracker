@@ -1,0 +1,9 @@
+.env
+.next/
+.vscode/*
+!.vscode/*.code-snippets
+!.vscode/extensions.json
+!.vscode/settings.json
+*.log
+dist/
+node_modules/
