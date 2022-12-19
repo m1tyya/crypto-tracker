@@ -31,6 +31,7 @@ export const Navbar = () => {
 				paddingX: vars.paddingNav,
 				position: 'sticky',
 				width: '100%',
+				zIndex: '99',
 			})}
 			id='primary-nav'>
 			<Logo />

@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
-import { Icon } from '~/components/icon';
+import { Vector } from '~/components/vector';
 import { styles } from '~/styles';
-import earth from '~icons/earth.svg';
+import LogoImage from '~vectors/logo.svg';
 
 export const Logo = () => (
 	<Link
@@ -12,13 +12,13 @@ export const Logo = () => (
 			flexDirection: 'row',
 		})}
 		href='/'>
-		<Icon size={'4rem'} svg={earth} />
+		<Vector props={{ width: '3rem', fill: '#ffffff' }} Svg={LogoImage} />
 		<span
 			className={styles({
 				fontSize: '2rem',
 				marginLeft: '1rem',
 			})}>
-			MyApp
+			PriMo
 		</span>
 	</Link>
 );

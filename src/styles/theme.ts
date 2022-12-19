@@ -1,4 +1,5 @@
 import { createStitches, defaultThemeMap } from '@stitches/react';
+import type { Property } from '@stitches/react/types/css';
 
 import { type CSS } from '~/types';
 
@@ -11,8 +12,10 @@ export const { config, css, getCssText, globalCss, styled, theme } = createStitc
 	},
 	theme: {
 		colors: {
-			text: 'hsl(0 0% 95%)',
-			bg: '#0E0C12',
+			white: 'hsl(0 0% 95%)',
+			bg: '#040405',
+			'price-down': '#FA0808',
+			'price-up': '#1ab012',
 		},
 		space: {
 			1: '1rem',
@@ -30,23 +33,23 @@ export const { config, css, getCssText, globalCss, styled, theme } = createStitc
 		paddingY: 'space',
 	},
 	utils: {
-		marginX: (value: string) => ({
+		marginX: (value: Property.Margin) => ({
 			marginLeft: value,
 			marginRight: value,
 		}),
-		marginY: (value: string) => ({
+		marginY: (value: Property.Margin) => ({
 			marginTop: value,
 			marginBottom: value,
 		}),
-		paddingX: (value: string) => ({
+		paddingX: (value: Property.Padding) => ({
 			paddingLeft: value,
 			paddingRight: value,
 		}),
-		paddingY: (value: string) => ({
+		paddingY: (value: Property.Padding) => ({
 			paddingTop: value,
 			paddingBottom: value,
 		}),
-		size: (value: string) => ({
+		size: (value: Property.Width) => ({
 			width: value,
 			height: value,
 		}),

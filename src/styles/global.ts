@@ -11,7 +11,7 @@ export const globalStyles = globalCss({
 		color: 'inherit',
 		textDecoration: 'none',
 	},
-	'a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,button,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,hr,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video':
+	'a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,button,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,hr,html,i,iframe,img, input, ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video':
 		{
 			backgroundColor: 'inherit',
 			border: '0',
@@ -28,7 +28,18 @@ export const globalStyles = globalCss({
 	button: {
 		cursor: 'pointer',
 	},
+	'flex > *': {
+		minWidth: '0',
+		minHeight: '0',
+		overflow: 'hidden',
+	},
+	input: {
+		width: '100%',
+	},
 	ul: {
 		listStyle: 'none',
+	},
+	'input:focus': {
+		outline: 'unset',
 	},
 });

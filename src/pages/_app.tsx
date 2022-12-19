@@ -17,7 +17,6 @@ const RootLayout: AppType = ({ Component, pageProps }: AppProps) => (
 			<Navbar />
 			<Component {...pageProps} />
 		</Container>
-		<Component />
 	</>
 );
 

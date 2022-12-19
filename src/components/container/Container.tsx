@@ -9,7 +9,7 @@ export const Container = ({ children }: ContainerProps) => (
 	<div
 		className={styles({
 			backgroundColor: '$bg',
-			color: '$text',
+			color: '$white',
 			minHeight: '100vh',
 			...INTER.style,
 		})}>

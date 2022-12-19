@@ -1,4 +1,4 @@
-import { styled } from '~/styles';
+import { styled, styles } from '~/styles';
 import { type CSS, type Stitches } from '~/types';
 
 type ButtonVariants = Stitches.VariantProps<typeof ButtonStyled>;
@@ -22,7 +22,7 @@ export const ButtonStyled = styled('button', {
 					backgroundColor: '$primary-60',
 				},
 				backgroundColor: '$primary-70',
-				color: '$text',
+				color: '$white',
 			},
 			outlined: {
 				'&:hover': {
@@ -46,7 +46,13 @@ export const ButtonStyled = styled('button', {
 });
 
 export const Button = ({ children, onClick, position, variant, width }: ButtonProps) => (
-	<ButtonStyled css={position} onClick={onClick} variant={variant} width={width}>
+	<ButtonStyled
+		className={styles({
+			...position,
+		})}
+		onClick={onClick}
+		variant={variant}
+		width={width}>
 		{children}
 	</ButtonStyled>
 );
