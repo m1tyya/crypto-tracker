@@ -11,9 +11,8 @@ export const FilteredCards = ({ filteredCoinList }: FilteredCardsProps) => (
 	<div
 		className={styles({
 			display: 'grid',
-			gap: '0',
-			width: '80%',
-			margin: '0 auto',
+			gap: '2rem',
+			margin: '4rem 5rem 0',
 			'@min0': {
 				gridTemplateColumns: 'repeat(2, 1fr)',
 			},
@@ -30,7 +29,6 @@ export const FilteredCards = ({ filteredCoinList }: FilteredCardsProps) => (
 				image={image}
 				key={id}
 				name={name}
-				position={{ marginTop: '$2' }}
 				priceChangePercentage24H={price_change_percentage_24h}
 				symbol={symbol}
 			/>

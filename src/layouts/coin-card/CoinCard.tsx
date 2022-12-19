@@ -27,9 +27,10 @@ export const CoinCard = ({ currentPrice, image, name, position, priceChangePerce
 			borderRadius: '1rem',
 			zIndex: '1',
 			display: 'grid',
-			gridTemplateColumns: '1fr 1fr',
-			padding: '2rem 4rem',
-			gap: '1vw 4vw',
+			alignItems: 'center',
+			gridTemplateColumns: 'auto min-content',
+			padding: '3rem',
+			gap: '2rem 1rem',
 
 			'&::before': {
 				backgroundColor: '$bg',
@@ -43,7 +44,13 @@ export const CoinCard = ({ currentPrice, image, name, position, priceChangePerce
 		})}>
 		<h3
 			className={styles({
-				fontSize: '4rem',
+				fontSize: '$40',
+				'@min0': {
+					fontSize: '$30',
+				},
+				'@min1': {
+					fontSize: '$20',
+				},
 				color: '#9A9A9A',
 			})}>
 			{name}
@@ -52,7 +59,7 @@ export const CoinCard = ({ currentPrice, image, name, position, priceChangePerce
 		<span
 			className={styles({
 				color: '#AFAFAF',
-				fontSize: '2rem',
+				fontSize: '$10',
 			})}>
 			{currentPrice.toLocaleString('en-US', {
 				minimumFractionDigits: 2,
@@ -61,8 +68,8 @@ export const CoinCard = ({ currentPrice, image, name, position, priceChangePerce
 		<span
 			className={styles({
 				color: priceChangePercentage24H > 0 ? '$price-up' : '$price-down',
-				fontSize: '2rem',
-				justifySelf: 'end',
+				fontSize: '$10',
+				justifySelf: 'center',
 			})}>
 			{Math.abs(priceChangePercentage24H).toLocaleString('en-US', {
 				minimumFractionDigits: 2,
