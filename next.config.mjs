@@ -4,6 +4,14 @@ const nextConfig = {
 		emotion: true,
 	},
 	distDir: 'dist',
+	images: {
+		remotePatterns: [
+			{
+				hostname: 'assets.coingecko.com',
+				protocol: 'https',
+			},
+		],
+	},
 	reactStrictMode: true,
 	swcMinify: true,
 	webpack(config) {
