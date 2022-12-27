@@ -13,9 +13,10 @@ export const { config, css, getCssText, globalCss, styled, theme } = createStitc
 	theme: {
 		colors: {
 			white: 'hsl(0 0% 95%)',
-			bg: '#040405',
+			bg: '#17171a',
 			'price-down': '#FA0808',
 			'price-up': '#1ab012',
+			primary: '#3B176A',
 		},
 		fontSizes: {
 			10: 'clamp(1.6rem, 0.34vw + 1.46rem, 1.9rem)',
@@ -23,7 +24,7 @@ export const { config, css, getCssText, globalCss, styled, theme } = createStitc
 			30: 'clamp(2.5rem, 1vw + 2.1rem, 3.38rem)',
 			40: 'clamp(3.13rem, 1.56vw + 2.5rem, 4.5rem)',
 			50: 'clamp(3.91rem, 2.38vw + 2.96rem, 6rem)',
-			60: 'clamp(4.88rem, 3.54vw + 3.47rem, 8rem)',
+			60: 'clamp(3.05rem, 3.89vw + 2.08rem, 5rem)',
 		},
 		space: {
 			1: '1rem',

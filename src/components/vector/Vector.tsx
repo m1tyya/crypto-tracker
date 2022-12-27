@@ -8,10 +8,13 @@ type VectorProps = {
 };
 
 export const Vector = ({ position, props, Svg }: VectorProps) => (
-	<Svg
-		className={styles({
-			...position,
-		})}
-		{...props}
-	/>
+	<>
+		<Svg
+			className={styles({
+				...position,
+			})}
+			{...props}
+			preserveAspectRatio='xMidYMid meet'
+		/>
+	</>
 );

@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { Vector } from '~/components/vector';
 import { styles } from '~/styles';
-import LogoImage from '~vectors/logo.svg';
+import { LogoImage } from '~vectors';
 
 export const Logo = () => (
 	<Link
