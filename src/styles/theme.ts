@@ -1,6 +1,7 @@
 import { createStitches, defaultThemeMap } from '@stitches/react';
 import type { Property } from '@stitches/react/types/css';
 
+import { stitchesConfigSchema } from '~/schemas';
 import { type CSS } from '~/types';
 
 export const { config, css, getCssText, globalCss, styled, theme } = createStitches({
@@ -12,11 +13,12 @@ export const { config, css, getCssText, globalCss, styled, theme } = createStitc
 	},
 	theme: {
 		colors: {
-			white: 'hsl(0 0% 95%)',
 			bg: '#17171a',
-			'price-down': '#FA0808',
-			'price-up': '#1ab012',
+			error: '#FA0808',
 			primary: '#3B176A',
+			'primary-50': '#EEBC51',
+			success: '#1ab012',
+			white: 'hsl(0 0% 95%)',
 		},
 		fontSizes: {
 			10: 'clamp(1.6rem, 0.34vw + 1.46rem, 1.9rem)',
@@ -26,7 +28,11 @@ export const { config, css, getCssText, globalCss, styled, theme } = createStitc
 			50: 'clamp(3.91rem, 2.38vw + 2.96rem, 6rem)',
 			60: 'clamp(3.05rem, 3.89vw + 2.08rem, 5rem)',
 		},
+		sizes: {
+			navbarHeight: '8rem',
+		},
 		space: {
+			paddingNav: '6vw',
 			1: '1rem',
 			2: '2rem',
 			3: '3rem',
@@ -65,6 +71,10 @@ export const { config, css, getCssText, globalCss, styled, theme } = createStitc
 	},
 });
 
+stitchesConfigSchema.parse(config);
+
 export function styles(content: CSS) {
 	return css({ ...content })();
 }
+
+export const { colors, fontSizes, sizes, space } = theme;

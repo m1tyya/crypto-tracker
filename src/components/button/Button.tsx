@@ -3,7 +3,7 @@ import { type CSS, type Stitches } from '~/types';
 
 type ButtonVariants = Stitches.VariantProps<typeof ButtonStyled>;
 
-type ButtonProps = {
+type Props = {
 	children: React.ReactNode;
 	onClick: () => void;
 	position?: CSS;
@@ -11,7 +11,7 @@ type ButtonProps = {
 	width?: ButtonVariants['width'];
 };
 
-export const ButtonStyled = styled('button', {
+const ButtonStyled = styled('button', {
 	borderRadius: '15px',
 	fontWeight: '600',
 	padding: '1rem 2rem',
@@ -45,14 +45,16 @@ export const ButtonStyled = styled('button', {
 	whiteSpace: 'nowrap',
 });
 
-export const Button = ({ children, onClick, position, variant, width }: ButtonProps) => (
-	<ButtonStyled
-		className={styles({
-			...position,
-		})}
-		onClick={onClick}
-		variant={variant}
-		width={width}>
-		{children}
-	</ButtonStyled>
-);
+export function Button({ children, onClick, position, variant, width }: Props) {
+	return (
+		<ButtonStyled
+			className={styles({
+				...position,
+			})}
+			onClick={onClick}
+			variant={variant}
+			width={width}>
+			{children}
+		</ButtonStyled>
+	);
+}

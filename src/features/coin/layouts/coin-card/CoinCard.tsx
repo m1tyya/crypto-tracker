@@ -1,29 +1,78 @@
+import { AxiosError } from 'axios';
 import Image from 'next/image';
+import { useEffect, useRef } from 'react';
 
 import { Vector } from '~/components/vector';
-import type { Coin } from '~/features/coin';
-import { Add, ArrowDown, ArrowUp, Remove, useCoinStore } from '~/features/coin';
-import { styles } from '~/styles';
+import { type CoinData, Add, ArrowDown, ArrowUp, Remove, useCoinStore } from '~/features/coin';
+import { axios } from '~/lib/axios';
+import { colors, styles } from '~/styles';
 import type { CSS, PickRenameMulti } from '~/types';
-import { isPositive } from '~/utils';
+import { formatFixedPoint, formatThousandSeparators } from '~/utils';
 
-type CoinCardProps = Omit<
-	PickRenameMulti<Coin, { current_price: 'currentPrice'; price_change_percentage_24h: 'priceChangePercentage24H' }>,
-	'isFound'
+type Props = PickRenameMulti<
+	CoinData,
+	{ current_price: 'currentPrice'; price_change_percentage_24h: 'priceChangePercentage24H' }
 > & {
+	isInteractive: boolean;
 	position?: CSS;
 };
 
-export const CoinCard = ({
+export function CoinCard({
 	currentPrice,
+	filters,
 	id,
 	image,
-	isSaved,
+	isInteractive,
 	name,
 	position,
 	priceChangePercentage24H,
-}: CoinCardProps) => {
-	const toggleSave = useCoinStore((state) => state.toggleSave);
+	symbol,
+}: Props) {
+	const { save, unsave } = useCoinStore();
+	// const { data, refetch } = useQuery({
+	// 	enabled: false,
+	// 	queryFn: async () => {
+	// 		await fetch(`/api/coins/${id}`, { method: 'POST' });
+	// 	},
+	// 	queryKey: [id],
+	// });
+	const isSaved = filters.has('isSaved');
+	const activeGridAreas = useRef<string>(`
+		"info info"
+		"market market"
+	`);
+	if (isInteractive) {
+		activeGridAreas.current = `
+			"actions actions"
+			${activeGridAreas.current}
+		`;
+	}
+
+	function handleToggle() {
+		try {
+			axios.post(`/coins/saved/${id}`);
+			if (isSaved) {
+				unsave(id);
+			} else {
+				save(id);
+			}
+		} catch (err) {
+			if (err instanceof AxiosError) {
+			}
+		}
+	}
+
+	function formatPrice(price: number): string {
+		return `$ ${formatThousandSeparators(formatFixedPoint(price, 2), ' ')}`;
+	}
+
+	function formatPriceChange(priceChange: number): string {
+		return `${formatFixedPoint(Math.abs(priceChange), 2)} %`;
+	}
+
+	useEffect(() => {
+		console.log(filters.has('isFound'));
+	});
 
 	return (
 		<div
@@ -38,85 +87,102 @@ export const CoinCard = ({
 				display: 'grid',
 				alignItems: 'center',
 				gridTemplateColumns: 'auto auto',
-				gridTemplateAreas: '"actions actions" "name logo" "price price-change"',
-				padding: '1rem 2rem 2rem',
-				gap: '2rem 1rem',
+				gridTemplateAreas: activeGridAreas.current,
+				padding: '2rem',
 				'&:hover button': {
 					visibility: 'visible',
 				},
+				letterSpacing: '.05rem',
 			})}>
+			{isInteractive && (
+				<div
+					className={styles({
+						gridArea: 'actions',
+						justifySelf: 'end',
+					})}>
+					<button
+						className={styles({
+							visibility: 'hidden',
+							size: '3rem',
+							borderRadius: '1rem',
+							backgroundColor: '#1C1C1C',
+						})}
+						onClick={handleToggle}>
+						<Vector
+							position={{
+								display: 'block',
+								margin: '0 auto',
+							}}
+							props={{
+								fill: '#fff',
+								width: '50%',
+							}}
+							Svg={isSaved ? Remove : Add}
+						/>
+					</button>
+				</div>
+			)}
 			<div
 				className={styles({
-					gridArea: 'actions',
-					justifySelf: 'end',
+					gridArea: 'info',
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					marginTop: '1.5rem',
 				})}>
-				<button
+				<h3
 					className={styles({
-						visibility: 'hidden',
-						size: '3rem',
-						borderRadius: '1rem',
-						backgroundColor: '#1C1C1C',
-					})}
-					onClick={() => toggleSave(id)}>
-					<Vector
-						position={{
-							display: 'block',
-							margin: '0 auto',
-						}}
-						props={{
-							fill: '#fff',
-							width: '50%',
-						}}
-						Svg={isSaved ? Remove : Add}
-					/>
-				</button>
+						fontSize: '$40',
+						'@min0': {
+							fontSize: '$20',
+						},
+						color: '#9A9A9A',
+					})}>
+					{name}
+				</h3>
+				<Image alt={`${name} Logo`} height='50' src={image} width='50' />
 			</div>
-			<h3
-				className={styles({
-					fontSize: '$40',
-					'@min0': {
-						fontSize: '$20',
-					},
-					color: '#9A9A9A',
-				})}>
-				{name}
-			</h3>
-			<Image alt={`${name} Logo`} className={styles({ justifySelf: 'end' })} height='50' src={image} width='50' />
-			<span
-				className={styles({
-					color: '#AFAFAF',
-					fontSize: '$20',
-					'@min0': {
-						fontSize: '$10',
-					},
-				})}>
-				{`$ ${currentPrice.toLocaleString('en-US', {
-					minimumFractionDigits: 2,
-				})}`}
-			</span>
 			<div
 				className={styles({
 					display: 'flex',
-					gap: '.6rem',
-					justifySelf: 'end',
+					justifyContent: 'space-between',
+					gridArea: 'market',
+					marginTop: '3rem',
 				})}>
-				<Vector
-					props={{ fill: isPositive(priceChangePercentage24H) ? '#2acc25' : '#ff0f0f', width: '1rem' }}
-					Svg={isPositive(priceChangePercentage24H) ? ArrowUp : ArrowDown}
-				/>
 				<span
 					className={styles({
-						color: isPositive(priceChangePercentage24H) ? '$price-up' : '$price-down',
+						color: '#AFAFAF',
 						fontSize: '$20',
 						'@min0': {
 							fontSize: '$10',
 						},
 					})}>
-					{`${Math.abs(priceChangePercentage24H).toLocaleString('en-US', {
-						minimumFractionDigits: 2,
-					})} %`}
+					{formatPrice(currentPrice)}
 				</span>
+				<div
+					className={styles({
+						display: 'flex',
+						gap: '.6rem',
+					})}>
+					<Vector
+						props={{
+							fill: priceChangePercentage24H > 0 ? colors.success.value : colors.error.value,
+							width: '10',
+						}}
+						Svg={priceChangePercentage24H > 0 ? ArrowUp : ArrowDown}
+					/>
+					<span
+						className={styles({
+							color: priceChangePercentage24H > 0 ? '$success' : '$error',
+							fontSize: '$20',
+							'@min0': {
+								fontSize: '$10',
+							},
+						})}>
+						{formatPriceChange(priceChangePercentage24H)}
+					</span>
+				</div>
 			</div>
 		</div>
 	);
-};
+}

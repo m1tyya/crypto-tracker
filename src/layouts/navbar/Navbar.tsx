@@ -1,14 +1,12 @@
-'use client';
-
 import { useState } from 'react';
 
-import { styles, vars } from '~/styles';
+import { styles } from '~/styles';
 
 import { Logo } from './Logo';
 import { MenuToggle } from './MenuToggle';
 import { NavbarList } from './NavbarList';
 
-export const Navbar = () => {
+export function Navbar() {
 	const [isOpen, setIsOpen] = useState(false);
 
 	function toggleMenu() {
@@ -26,9 +24,9 @@ export const Navbar = () => {
 				backdropFilter: 'blur(8px)',
 				backgroundColor: '$bg',
 				display: 'flex',
-				height: vars.navbarHeight,
+				height: '$navbarHeight',
 				inset: '0',
-				paddingX: vars.paddingNav,
+				paddingX: '$paddingNav',
 				position: 'sticky',
 				width: '100%',
 				zIndex: '99',
@@ -36,7 +34,7 @@ export const Navbar = () => {
 			id='primary-nav'>
 			<Logo />
 			<MenuToggle isOpen={isOpen} onClick={toggleMenu} />
-			<NavbarList show={isOpen} />
+			<NavbarList isShown={isOpen} />
 		</nav>
 	);
-};
+}

@@ -1,13 +1,28 @@
-import type { NextPage } from 'next';
+import type { GetServerSideProps } from 'next';
+import { unstable_getServerSession } from 'next-auth';
 
-import { FilteredCards } from '~/features/coin';
-import { SearchBar } from '~/features/search';
+import { authOptions } from './api/auth/[...nextauth]';
 
-const Home: NextPage = () => (
-	<>
-		<SearchBar />
-		<FilteredCards />
-	</>
-);
+function Home() {
+	return (
+		<>
+			<h1>Home Page</h1>
+		</>
+	);
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+	const session = await unstable_getServerSession(req, res, authOptions);
+	if (session) {
+		return {
+			redirect: {
+				destination: '/dashboard',
+				permanent: false,
+			},
+		};
+	}
+
+	return { props: {} };
+};
 
 export default Home;

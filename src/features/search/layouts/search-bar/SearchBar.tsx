@@ -1,5 +1,3 @@
-/* eslint-disable react/display-name */
-
 import { useRef } from 'react';
 
 import { Vector } from '~/components/vector';
@@ -8,8 +6,8 @@ import { Search } from '~/features/search';
 import { styles } from '~/styles';
 import { stringIncludes } from '~/utils';
 
-export const SearchBar = () => {
-	const { coinList, hide, show } = useCoinStore((state) => state);
+export function SearchBar() {
+	const { coinList, hide, show } = useCoinStore();
 	const searchQueryRef = useRef<HTMLInputElement>(null);
 
 	function filterCoins() {
@@ -57,4 +55,4 @@ export const SearchBar = () => {
 			/>
 		</div>
 	);
-};
+}

@@ -7,14 +7,16 @@ type VectorProps = {
 	Svg: React.FC<React.SVGProps<SVGSVGElement>>;
 };
 
-export const Vector = ({ position, props, Svg }: VectorProps) => (
-	<>
-		<Svg
-			className={styles({
-				...position,
-			})}
-			{...props}
-			preserveAspectRatio='xMidYMid meet'
-		/>
-	</>
-);
+export function Vector({ position, props, Svg }: VectorProps) {
+	return (
+		<>
+			<Svg
+				className={styles({
+					...position,
+				})}
+				{...props}
+				preserveAspectRatio='xMidYMid meet'
+			/>
+		</>
+	);
+}

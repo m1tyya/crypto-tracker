@@ -1,17 +1,19 @@
 import { z } from 'zod';
 
-export const CoinFetchSchema = z.object({
+import { roundToDecimals } from '~/utils';
+
+export const FilterSchema = z.enum(['isFound', 'isSaved']);
+export const FilterListSchema = z.set(FilterSchema);
+
+export const CoinDataSchema = z.object({
+	current_price: z.number().transform((num) => roundToDecimals(num, 2)),
 	id: z.string(),
-	image: z.string(),
+	image: z.string().url(),
 	name: z.string(),
-	current_price: z.number().transform((num) => +num.toFixed(2)),
-	price_change_percentage_24h: z.number().transform((num) => +num.toFixed(2)),
+	price_change_percentage_24h: z.number().transform((num) => roundToDecimals(num, 2)),
 	symbol: z.string(),
 });
 
-export const CoinDynamicSchema = z.object({
-	isFound: z.boolean(),
-	isSaved: z.boolean(),
+export const CoinSchema = CoinDataSchema.extend({
+	filters: FilterListSchema,
 });
-
-export const CoinSchema = CoinFetchSchema.merge(CoinDynamicSchema);

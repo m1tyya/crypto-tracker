@@ -8,7 +8,7 @@
 	"extends": ["next"],
 	"overrides": [
 		{
-			"files": ["src/pages/**/*", "next.config.*"],
+			"files": ["src/pages/**/*", "next.config.*", "./*.ts"],
 			"rules": {
 				"import/no-default-export": "off"
 			}
@@ -37,11 +37,14 @@
 		"react-hooks",
 		"unicorn",
 		"unused-imports",
+		"@tanstack/query",
 		"@typescript-eslint"
 	],
 	"root": true,
 	"rules": {
 		"@next/next/no-head-element": "off",
+		"@tanstack/query/exhaustive-deps": "warn",
+		"@tanstack/query/prefer-query-object-syntax": "warn",
 		"@typescript-eslint/array-type": [
 			"warn",
 			{
@@ -69,13 +72,28 @@
 			}
 		],
 		"@typescript-eslint/method-signature-style": ["warn", "property"],
+		"@typescript-eslint/naming-convention": [
+			"warn",
+			{
+				"selector": "variable",
+				"format": ["UPPER_CASE", "strictCamelCase", "StrictPascalCase"],
+				"leadingUnderscore": "allow"
+			}
+		],
 		"@typescript-eslint/no-array-constructor": "warn",
 		"@typescript-eslint/no-explicit-any": "warn",
 		"@typescript-eslint/no-for-in-array": "warn",
 		"@typescript-eslint/no-restricted-imports": [
 			"error",
 			{
-				"patterns": ["~/components/*/*", "~/features/*/*", "~/layouts/*/*", "~/styles/*", "~/types/*", "~/utils/*"],
+				"patterns": [
+					"~/components/*/*",
+					"~/features/*/*",
+					"~/layouts/*/*",
+					"~/styles/*",
+					"~/types/*",
+					"~/utils/*"
+				],
 				"message": "Import from index."
 			}
 		],
@@ -88,6 +106,7 @@
 				"next": "return"
 			}
 		],
+		"@typescript-eslint/sort-type-constituents": "warn",
 		"@typescript-eslint/triple-slash-reference": [
 			"warn",
 			{
@@ -98,7 +117,6 @@
 		],
 		"arrow-body-style": ["warn", "as-needed"],
 		"curly": ["warn", "all"],
-		"destructuring/no-rename": "warn",
 		"dot-notation": "warn",
 		"eqeqeq": ["warn", "smart"],
 		"import/first": "warn",
@@ -130,12 +148,21 @@
 		"prefer-spread": "warn",
 		"prefer-template": "warn",
 		"prettier/prettier": "warn",
-		"react/boolean-prop-naming": ["warn", {
-			"propTypeNames": ["boolean"],
-			"message": "Use 'has' or 'is' before boolean prop name.",
-			"validateNested": true
-		}],
+		"react/boolean-prop-naming": [
+			"warn",
+			{
+				"propTypeNames": ["boolean"],
+				"message": "Use 'has' or 'is' before boolean prop name.",
+				"validateNested": true
+			}
+		],
 		"react/destructuring-assignment": ["warn", "always"],
+		"react/function-component-definition": [
+			"warn",
+			{
+				"namedComponents": "function-declaration"
+			}
+		],
 		"react/hook-use-state": "warn",
 		"react/jsx-boolean-value": "warn",
 		"react/jsx-fragments": ["warn", "syntax"],
@@ -149,6 +176,7 @@
 		],
 		"react/no-array-index-key": "warn",
 		"react/no-children-prop": "warn",
+		"react-hooks/exhaustive-deps": "off",
 		"simple-import-sort/imports": "warn",
 		"simple-import-sort/exports": "warn",
 		"sort-class-members/sort-class-members": [

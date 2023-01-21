@@ -1,18 +1,20 @@
 import { INTER } from '~/constants';
 import { styles } from '~/styles';
 
-type ContainerProps = {
+type Props = {
 	children: React.ReactNode;
 };
 
-export const Container = ({ children }: ContainerProps) => (
-	<div
-		className={styles({
-			backgroundColor: '$bg',
-			color: '$white',
-			minHeight: '100vh',
-			...INTER.style,
-		})}>
-		{children}
-	</div>
-);
+export function Container({ children }: Props) {
+	return (
+		<div
+			className={styles({
+				backgroundColor: '$bg',
+				color: '$white',
+				minHeight: '100vh',
+				...INTER.style,
+			})}>
+			{children}
+		</div>
+	);
+}
