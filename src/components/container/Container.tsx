@@ -1,9 +1,9 @@
+import { type PropsWithChildren } from 'react';
+
 import { INTER } from '~/constants';
 import { styles } from '~/styles';
 
-type Props = {
-	children: React.ReactNode;
-};
+type Props = PropsWithChildren;
 
 export function Container({ children }: Props) {
 	return (

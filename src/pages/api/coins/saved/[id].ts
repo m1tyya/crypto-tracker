@@ -1,34 +1,34 @@
-import { AxiosError } from 'axios';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
+import { getToken } from 'next-auth/jwt';
 
-import { axios } from '~/lib/axios';
 import { prisma } from '~/lib/prisma';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	let userId;
-	try {
-		userId = await (await axios.get('/user')).data;
-	} catch (err) {
-		if (err instanceof AxiosError) {
-			if (err.status) {
-				return res.status(err.status)?.end(err.message);
-			}
+export default async function handler(req: NextApiRequest, res: NextApiResponse<boolean>) {
+	const token = await getToken({ req });
 
-			return res.status(500).end(err.message);
-		}
+	if (!token) {
+		res.status(401).end('Login to update coin data');
 
-		throw err;
+		return;
 	}
 
-	const { coinId } = req.query;
+	if (!token?.sub) {
+		res.status(500).end('Server error. Try again later.');
+
+		return;
+	}
+
+	const { id: coinId } = req.query;
 	if (typeof coinId !== 'string') {
-		return res.status(400).end('Invalid query parameters. Please specify coin id to update.');
+		res.status(400).end('Invalid query parameters. Please specify coin id to update.');
+
+		return;
 	}
 
 	const [savedCoin] = (
 		await prisma.user.findUniqueOrThrow({
 			where: {
-				id: userId,
+				id: token.sub,
 			},
 			select: {
 				savedCoins: {
@@ -42,13 +42,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 	switch (req.method) {
 		case 'GET': {
-			return savedCoin !== undefined;
+			res.json(savedCoin !== undefined);
+			break;
 		}
 		case 'POST': {
-			if (!savedCoin) {
+			if (savedCoin) {
 				await prisma.user.update({
 					where: {
-						id: userId,
+						id: token.sub,
+					},
+					data: {
+						savedCoins: {
+							delete: {
+								id: coinId,
+							},
+						},
+					},
+				});
+
+				res.json(false);
+				break;
+			} else {
+				await prisma.user.update({
+					where: {
+						id: token.sub,
 					},
 					data: {
 						savedCoins: {
@@ -59,23 +76,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					},
 				});
 
-				return true;
-			} else {
-				await prisma.user.update({
-					where: {
-						id: userId,
-					},
-					data: {
-						savedCoins: {
-							delete: {
-								id: coinId,
-							},
-						},
-					},
-				});
+				res.json(true);
+				break;
 			}
-
-			return false;
 		}
 		default: {
 			res.status(405).end(`Method ${req.method} is invalid.`);

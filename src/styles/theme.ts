@@ -1,5 +1,5 @@
 import { createStitches, defaultThemeMap } from '@stitches/react';
-import type { Property } from '@stitches/react/types/css';
+import { type Property } from '@stitches/react/types/css';
 
 import { stitchesConfigSchema } from '~/schemas';
 import { type CSS } from '~/types';

@@ -5,7 +5,6 @@
 		"jest": true,
 		"node": true
 	},
-	"extends": ["next"],
 	"overrides": [
 		{
 			"files": ["src/pages/**/*", "next.config.*", "./*.ts"],
@@ -25,6 +24,8 @@
 	},
 	"plugins": [
 		"autofix",
+		"canonical",
+		"css",
 		"destructuring",
 		"import",
 		"jest",
@@ -33,8 +34,11 @@
 		"sort-class-members",
 		"sort-destructure-keys",
 		"prettier",
+		"promise",
 		"react",
 		"react-hooks",
+		"sort",
+		"sort-react-dependency-arrays",
 		"unicorn",
 		"unused-imports",
 		"@tanstack/query",
@@ -54,30 +58,18 @@
 		"@typescript-eslint/consistent-type-imports": [
 			"warn",
 			{
-				"disallowTypeAnnotations": true,
-				/*
-				To be released soon
-				"fixStyle": "inline-type-imports",
-				*/
-				"prefer": "type-imports"
-			}
-		],
-		"@typescript-eslint/member-ordering": [
-			"warn",
-			{
-				"typeLiterals": {
-					"memberTypes": "never",
-					"order": "alphabetically-case-insensitive"
-				}
+				/* To be released
+                                                            "fixStyle": "inline-type-imports",
+                                                            */
 			}
 		],
 		"@typescript-eslint/method-signature-style": ["warn", "property"],
 		"@typescript-eslint/naming-convention": [
 			"warn",
 			{
-				"selector": "variable",
 				"format": ["UPPER_CASE", "strictCamelCase", "StrictPascalCase"],
-				"leadingUnderscore": "allow"
+				"leadingUnderscore": "allow",
+				"selector": "variable"
 			}
 		],
 		"@typescript-eslint/no-array-constructor": "warn",
@@ -86,6 +78,7 @@
 		"@typescript-eslint/no-restricted-imports": [
 			"error",
 			{
+				"message": "Import from index.",
 				"patterns": [
 					"~/components/*/*",
 					"~/features/*/*",
@@ -93,8 +86,7 @@
 					"~/styles/*",
 					"~/types/*",
 					"~/utils/*"
-				],
-				"message": "Import from index."
+				]
 			}
 		],
 		"@typescript-eslint/no-useless-constructor": "warn",
@@ -102,8 +94,8 @@
 			"warn",
 			{
 				"blankLine": "always",
-				"prev": "*",
-				"next": "return"
+				"next": "return",
+				"prev": "*"
 			}
 		],
 		"@typescript-eslint/sort-type-constituents": "warn",
@@ -116,13 +108,23 @@
 			}
 		],
 		"arrow-body-style": ["warn", "as-needed"],
+		"autofix/prefer-destructuring": ["warn", {
+			"object": true,
+			"array": false
+		}],
+		"canonical/prefer-inline-type-import": "warn",
 		"curly": ["warn", "all"],
 		"dot-notation": "warn",
 		"eqeqeq": ["warn", "smart"],
 		"import/first": "warn",
 		"import/newline-after-import": "warn",
 		"import/no-default-export": "error",
-		"import/no-duplicates": "warn",
+		"import/no-duplicates": [
+			"warn",
+			{
+				"prefer-inline": true
+			}
+		],
 		"no-case-declarations": "warn",
 		"no-confusing-arrow": "warn",
 		"no-dupe-class-members": "warn",
@@ -130,7 +132,6 @@
 		"no-iterator": "warn",
 		"no-loop-func": "warn",
 		"no-multi-assign": "warn",
-		"no-nested-ternary": "warn",
 		"no-new-func": "warn",
 		"no-new-object": "warn",
 		"no-new-wrappers": "warn",
@@ -142,17 +143,18 @@
 		"one-var": ["warn", "never"],
 		"prefer-arrow-callback": "warn",
 		"prefer-const": "warn",
-		"autofix/prefer-destructuring": "warn",
 		"prefer-object-spread": "warn",
 		"prefer-rest-params": "warn",
 		"prefer-spread": "warn",
 		"prefer-template": "warn",
 		"prettier/prettier": "warn",
+		"promise/prefer-await-to-then": "warn",
+		"react-hooks/exhaustive-deps": "off",
 		"react/boolean-prop-naming": [
 			"warn",
 			{
-				"propTypeNames": ["boolean"],
 				"message": "Use 'has' or 'is' before boolean prop name.",
+				"propTypeNames": ["boolean"],
 				"validateNested": true
 			}
 		],
@@ -175,10 +177,9 @@
 			}
 		],
 		"react/no-array-index-key": "warn",
-		"react/no-children-prop": "warn",
-		"react-hooks/exhaustive-deps": "off",
-		"simple-import-sort/imports": "warn",
+		"react/no-children-prop": "error",
 		"simple-import-sort/exports": "warn",
+		"simple-import-sort/imports": "warn",
 		"sort-class-members/sort-class-members": [
 			"warn",
 			{
@@ -191,6 +192,8 @@
 				"caseSensitive": false
 			}
 		],
+		"sort-react-dependency-arrays/sort": "warn",
+		"sort/type-properties": "warn",
 		"spaced-comment": [
 			"warn",
 			"always",
@@ -198,8 +201,60 @@
 				"markers": ["/"]
 			}
 		],
+		"unicorn/better-regex": "warn",
+		"unicorn/no-unreadable-array-destructuring": "warn",
+		"unicorn/escape-case": "warn",
+		"unicorn/explicit-length-check": "warn",
 		"unicorn/no-array-for-each": "warn",
+		"unicorn/no-array-push-push": "warn",
+		"unicorn/no-array-reduce": "warn",
+		"unicorn/no-instanceof-array": "warn",
+		"unicorn/no-useless-spread": "warn",
+		"unicorn/no-nested-ternary": "warn",
+		"unicorn/no-null": "warn",
+		"unicorn/no-typeof-undefined": "warn",
+		"unicorn/no-unnecessary-await": "warn",
+		"unicorn/number-literal-case": "warn",
+		"unicorn/prefer-array-some": "warn",
+		"unicorn/prefer-at": [
+			"warn",
+			{
+				"checkAllIndexAccess": true
+			}
+		],
+		"unicorn/prefer-date-now": "warn",
+		"unicorn/prefer-default-parameters": "warn",
+		"unicorn/prefer-includes": "warn",
+		"unicorn/prefer-logical-operator-over-ternary": "warn",
+		"unicorn/prefer-math-trunc": "warn",
+		"unicorn/prefer-negative-index": "warn",
+		"unicorn/prefer-spread": "warn",
+		"unicorn/prefer-string-replace-all": "warn",
+		"unicorn/prefer-string-starts-ends-with": "warn",
+		"unicorn/prefer-switch": [
+			"warn",
+			{
+				"emptyDefaultCase": "no-default-case"
+			}
+		],
+		"unicorn/prefer-ternary": "warn",
+		"unicorn/consistent-destructuring": "warn",
+		"unicorn/consistent-function-scoping": "warn",
+		"unicorn/new-for-builtins": "warn",
+		"unicorn/no-array-callback-reference": "warn",
+		"unicorn/no-hex-escape": "warn",
+		"unicorn/no-negated-condition": "warn",
+		"unicorn/relative-url-style": "warn",
+		"unicorn/require-array-join-separator": "warn",
+		"unicorn/switch-case-braces": "warn",
+		"unicorn/template-indent": "warn",
+		"unicorn/throw-new-error": "warn",
 		"unused-imports/no-unused-imports": "warn",
 		"yoda": "warn"
+	},
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
 	}
 }

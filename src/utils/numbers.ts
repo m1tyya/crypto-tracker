@@ -11,7 +11,7 @@ export function formatThousandSeparators(num: number | string, separator: string
 		throw new Error('You must specify one character to separate thousands.');
 	}
 
-	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator);
+	return num.toString().replaceAll(/\B(?=(\d{3})+(?!\d))/g, separator);
 }
 
 export function formatFixedPoint(num: number, decimals: number): string {

@@ -1,14 +1,14 @@
-import type { GetServerSideProps } from 'next';
+import { type GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import { useRef } from 'react';
 
-import { type FilterList, FilteredCards } from '~/features/coin';
+import { type Filter, FilteredCards } from '~/features/coin';
 import { SearchBar } from '~/features/search';
 
 import { authOptions } from './api/auth/[...nextauth]';
 
 function Saved() {
-	const filters = useRef<FilterList>(new Set(['isSaved']));
+	const filters = useRef<Set<Filter>>(new Set(['isFound', 'isSaved']));
 
 	return (
 		<>

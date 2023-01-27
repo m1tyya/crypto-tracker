@@ -7,6 +7,11 @@ generator client {
     provider = "prisma-client-js"
 }
 
+generator zod {
+    provider = "zod-prisma-types"
+    output   = "./zod"
+}
+
 model Account {
     access_token      String? @db.Text
     expires_at        Int?

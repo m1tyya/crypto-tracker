@@ -1,20 +1,24 @@
+import { type PropsWithChildren } from 'react';
+
 import { styled, styles } from '~/styles';
 import { type CSS, type Stitches } from '~/types';
 
 type ButtonVariants = Stitches.VariantProps<typeof ButtonStyled>;
 
-type Props = {
-	children: React.ReactNode;
+type Props = PropsWithChildren & {
 	onClick: () => void;
 	position?: CSS;
 	variant: ButtonVariants['variant'];
-	width?: ButtonVariants['width'];
 };
 
 const ButtonStyled = styled('button', {
+	width: '100%',
 	borderRadius: '15px',
 	fontWeight: '600',
 	padding: '1rem 2rem',
+	'@min1': {
+		width: 'auto',
+	},
 	variants: {
 		variant: {
 			filled: {
@@ -29,31 +33,22 @@ const ButtonStyled = styled('button', {
 					backgroundColor: '$bg',
 				},
 				backgroundColor: '',
-				border: '1px solid $primary-50',
+				border: '2px solid $primary-50',
 				color: '$primary-50',
-			},
-		},
-		width: {
-			full: {
-				width: '100%',
-			},
-			normal: {
-				width: '100%',
 			},
 		},
 	},
 	whiteSpace: 'nowrap',
 });
 
-export function Button({ children, onClick, position, variant, width }: Props) {
+export function Button({ children, onClick, position, variant }: Props) {
 	return (
 		<ButtonStyled
 			className={styles({
 				...position,
 			})}
 			onClick={onClick}
-			variant={variant}
-			width={width}>
+			variant={variant}>
 			{children}
 		</ButtonStyled>
 	);

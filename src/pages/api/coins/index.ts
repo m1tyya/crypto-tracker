@@ -1,9 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import { ZodError } from 'zod';
 
-import type { CoinFetchData } from '~/features/coin';
-import { CoinDataSchema, URL } from '~/features/coin';
-import type { ResponseError } from '~/types';
+import { type CoinFetchData, CoinDataSchema, URL } from '~/features/coin';
+import { type ResponseError } from '~/types';
 
 type ResponseSuccess = Array<CoinFetchData>;
 

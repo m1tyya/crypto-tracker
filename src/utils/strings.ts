@@ -1,3 +1,9 @@
-export function stringIncludes(searchedString: string, searchString: string) {
-	return searchedString.toLowerCase().includes(searchString.toLowerCase());
+export function stringsInclude(searchQuery: string, ...searchStrings: Array<string>): boolean {
+	for (const string of searchStrings) {
+		if (string.toLowerCase().includes(searchQuery.toLowerCase())) {
+			return true;
+		}
+	}
+
+	return false;
 }

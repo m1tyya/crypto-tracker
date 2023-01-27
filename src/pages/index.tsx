@@ -1,7 +1,5 @@
-import type { GetServerSideProps } from 'next';
-import { unstable_getServerSession } from 'next-auth';
-
-import { authOptions } from './api/auth/[...nextauth]';
+import { type GetServerSideProps } from 'next';
+import { getToken } from 'next-auth/jwt';
 
 function Home() {
 	return (
@@ -11,9 +9,9 @@ function Home() {
 	);
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-	const session = await unstable_getServerSession(req, res, authOptions);
-	if (session) {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+	const token = await getToken({ req });
+	if (token) {
 		return {
 			redirect: {
 				destination: '/dashboard',

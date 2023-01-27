@@ -3,7 +3,6 @@ import { z } from 'zod';
 import { roundToDecimals } from '~/utils';
 
 export const FilterSchema = z.enum(['isFound', 'isSaved']);
-export const FilterListSchema = z.set(FilterSchema);
 
 export const CoinDataSchema = z.object({
 	current_price: z.number().transform((num) => roundToDecimals(num, 2)),
@@ -14,6 +13,11 @@ export const CoinDataSchema = z.object({
 	symbol: z.string(),
 });
 
-export const CoinSchema = CoinDataSchema.extend({
-	filters: FilterListSchema,
-});
+export const CoinFiltersSchema = z
+	.object({
+		isFound: z.boolean(),
+		isSaved: z.boolean(),
+	})
+	.strict();
+
+export const CoinSchema = CoinDataSchema.extend({ filters: CoinFiltersSchema });

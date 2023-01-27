@@ -3,6 +3,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { Button } from '~/components/button';
 import { styles, theme } from '~/styles';
 
+import { NavbarElement } from './NavbarElement';
 import { NavbarLinks } from './NavbarLinks';
 
 type NavbarListProps = {
@@ -10,30 +11,15 @@ type NavbarListProps = {
 };
 
 export function NavbarList({ isShown }: NavbarListProps) {
-	const { data } = useSession();
+	const isAuthenticated = useSession().status === 'authenticated';
 
-	async function handleSignIn() {
-		await signIn('google', {
-			callbackUrl: '/dashboard',
-		});
+	async function handleAuth() {
+		await (isAuthenticated
+			? signOut()
+			: signIn('google', {
+					callbackUrl: '/dashboard',
+			  }));
 	}
-
-	async function handleSignOut() {
-		await signOut();
-	}
-
-	const authBtn = data ? (
-		<>
-			<p>Welcome {data.user?.name}</p>
-			<Button onClick={handleSignOut} variant={'outlined'}>
-				Logout
-			</Button>
-		</>
-	) : (
-		<Button onClick={handleSignIn} variant={'outlined'}>
-			Login
-		</Button>
-	);
 
 	return (
 		<div
@@ -59,7 +45,11 @@ export function NavbarList({ isShown }: NavbarListProps) {
 				},
 			})}>
 			<NavbarLinks />
-			{authBtn}
+			<NavbarElement position={{ paddingY: '$2' }}>
+				<Button onClick={handleAuth} variant={'outlined'}>
+					{isAuthenticated ? 'Logout' : 'Login'}
+				</Button>
+			</NavbarElement>
 		</div>
 	);
 }

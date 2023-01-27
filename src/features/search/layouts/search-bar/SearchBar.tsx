@@ -1,14 +1,16 @@
-import { useRef } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useRef } from 'react';
+import { BsSearch } from 'react-icons/bs';
 
 import { Vector } from '~/components/vector';
 import { useCoinStore } from '~/features/coin';
-import { Search } from '~/features/search';
 import { styles } from '~/styles';
-import { stringIncludes } from '~/utils';
+import { stringsInclude } from '~/utils';
 
 export function SearchBar() {
-	const { coinList, hide, show } = useCoinStore();
+	const { coinList, resetShow, toggleShow } = useCoinStore();
 	const searchQueryRef = useRef<HTMLInputElement>(null);
+	const { events } = useRouter();
 
 	function filterCoins() {
 		if (!searchQueryRef.current) {
@@ -17,13 +19,18 @@ export function SearchBar() {
 
 		for (const coin of coinList) {
 			const searchQuery = searchQueryRef.current.value;
-			if (stringIncludes(coin.name, searchQuery)) {
-				show(coin.id);
-			} else {
-				hide(coin.id);
-			}
+			const isFound = stringsInclude(searchQuery, coin.name, coin.symbol);
+			toggleShow(coin.id, isFound);
 		}
 	}
+
+	useEffect(() => {
+		events.on('routeChangeComplete', resetShow);
+
+		return () => {
+			events.off('routeChangeComplete', resetShow);
+		};
+	}, [events]);
 
 	return (
 		<div
@@ -38,7 +45,7 @@ export function SearchBar() {
 				height: '5rem',
 				borderRadius: '1.5rem',
 			})}>
-			<Vector props={{ fill: '#fff', height: '50%' }} Svg={Search} />
+			<Vector position={{ size: '2rem' }} Svg={BsSearch} />
 			<input
 				className={styles({
 					backgroundColor: 'inherit',

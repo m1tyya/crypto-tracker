@@ -1,12 +1,15 @@
+import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
+import { HiOutlinePlus, HiOutlineX } from 'react-icons/hi';
+import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
 
 import { Vector } from '~/components/vector';
-import { type CoinData, Add, ArrowDown, ArrowUp, Remove, useCoinStore } from '~/features/coin';
+import { type CoinData, useCoinStore } from '~/features/coin';
 import { axios } from '~/lib/axios';
 import { colors, styles } from '~/styles';
-import type { CSS, PickRenameMulti } from '~/types';
+import { type CSS, type PickRenameMulti } from '~/types';
 import { formatFixedPoint, formatThousandSeparators } from '~/utils';
 
 type Props = PickRenameMulti<
@@ -17,9 +20,17 @@ type Props = PickRenameMulti<
 	position?: CSS;
 };
 
+function formatPrice(price: number): string {
+	return `$ ${formatThousandSeparators(formatFixedPoint(price, 2), ' ')}`;
+}
+
+function formatPriceChange(priceChange: number): string {
+	return `${formatFixedPoint(Math.abs(priceChange), 2)} %`;
+}
+
 export function CoinCard({
 	currentPrice,
-	filters,
+	filters: { isSaved },
 	id,
 	image,
 	isInteractive,
@@ -28,15 +39,14 @@ export function CoinCard({
 	priceChangePercentage24H,
 	symbol,
 }: Props) {
-	const { save, unsave } = useCoinStore();
-	// const { data, refetch } = useQuery({
-	// 	enabled: false,
-	// 	queryFn: async () => {
-	// 		await fetch(`/api/coins/${id}`, { method: 'POST' });
-	// 	},
-	// 	queryKey: [id],
-	// });
-	const isSaved = filters.has('isSaved');
+	const { toggleSave } = useCoinStore();
+	const {
+		error,
+		isSuccess: isToggleSavedSuccess,
+		mutate: mutateSaved,
+	} = useMutation({
+		mutationFn: async (id: string) => await axios.post<boolean>(`/coins/saved/${id}`),
+	});
 	const activeGridAreas = useRef<string>(`
 		"info info"
 		"market market"
@@ -50,29 +60,13 @@ export function CoinCard({
 
 	function handleToggle() {
 		try {
-			axios.post(`/coins/saved/${id}`);
-			if (isSaved) {
-				unsave(id);
-			} else {
-				save(id);
-			}
+			mutateSaved(id);
+			toggleSave(id, !isSaved);
 		} catch (err) {
 			if (err instanceof AxiosError) {
 			}
 		}
 	}
-
-	function formatPrice(price: number): string {
-		return `$ ${formatThousandSeparators(formatFixedPoint(price, 2), ' ')}`;
-	}
-
-	function formatPriceChange(priceChange: number): string {
-		return `${formatFixedPoint(Math.abs(priceChange), 2)} %`;
-	}
-
-	useEffect(() => {
-		console.log(filters.has('isFound'));
-	});
 
 	return (
 		<div
@@ -89,6 +83,11 @@ export function CoinCard({
 				gridTemplateColumns: 'auto auto',
 				gridTemplateAreas: activeGridAreas.current,
 				padding: '2rem',
+				transition: 'all .2s ease-in-out',
+				'&:hover': {
+					borderColor: '#6e6d6d',
+					transform: 'scale(1.04)',
+				},
 				'&:hover button': {
 					visibility: 'visible',
 				},
@@ -112,12 +111,9 @@ export function CoinCard({
 							position={{
 								display: 'block',
 								margin: '0 auto',
+								color: 'white',
 							}}
-							props={{
-								fill: '#fff',
-								width: '50%',
-							}}
-							Svg={isSaved ? Remove : Add}
+							Svg={isSaved ? HiOutlineX : HiOutlinePlus}
 						/>
 					</button>
 				</div>
@@ -130,16 +126,34 @@ export function CoinCard({
 					alignItems: 'center',
 					marginTop: '1.5rem',
 				})}>
-				<h3
+				<div
 					className={styles({
-						fontSize: '$40',
-						'@min0': {
-							fontSize: '$20',
-						},
-						color: '#9A9A9A',
+						display: 'flex',
+						flexDirection: 'column',
 					})}>
-					{name}
-				</h3>
+					<h3
+						className={styles({
+							fontSize: '$40',
+							'@min0': {
+								fontSize: '$20',
+							},
+							color: '$white',
+						})}>
+						{name}
+					</h3>
+					<h3
+						className={styles({
+							fontSize: '$30',
+							'@min0': {
+								fontSize: '$10',
+							},
+							marginTop: '$2',
+							color: '#9A9A9A',
+						})}>
+						{symbol.toUpperCase()}
+					</h3>
+				</div>
+
 				<Image alt={`${name} Logo`} height='50' src={image} width='50' />
 			</div>
 			<div
@@ -162,6 +176,7 @@ export function CoinCard({
 				<div
 					className={styles({
 						display: 'flex',
+						alignItems: 'center',
 						gap: '.6rem',
 					})}>
 					<Vector
@@ -169,7 +184,7 @@ export function CoinCard({
 							fill: priceChangePercentage24H > 0 ? colors.success.value : colors.error.value,
 							width: '10',
 						}}
-						Svg={priceChangePercentage24H > 0 ? ArrowUp : ArrowDown}
+						Svg={priceChangePercentage24H > 0 ? MdOutlineKeyboardArrowUp : MdOutlineKeyboardArrowDown}
 					/>
 					<span
 						className={styles({

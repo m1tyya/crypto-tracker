@@ -1,5 +1,5 @@
 import { styles } from '~/styles';
-import type { CSS } from '~/types';
+import { type CSS } from '~/types';
 
 type VectorProps = {
 	position?: CSS;

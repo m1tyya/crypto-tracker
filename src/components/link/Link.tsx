@@ -1,11 +1,11 @@
 import NextLink from 'next/link';
-import type { URL } from 'url';
+import { type PropsWithChildren } from 'react';
+import { type URL } from 'url';
 
-type LinkProps = {
-	children: React.ReactNode;
+type Props = PropsWithChildren & {
 	url: URL;
 };
 
-export function Link({ children, url }: LinkProps) {
+export function Link({ children, url }: Props) {
 	return <NextLink href={url.href}>{children}</NextLink>;
 }
