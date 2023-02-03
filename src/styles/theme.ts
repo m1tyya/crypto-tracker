@@ -4,6 +4,8 @@ import { type Property } from '@stitches/react/types/css';
 import { stitchesConfigSchema } from '~/schemas';
 import { type CSS } from '~/types';
 
+export const bps: Array<number> = [600, 900, 1200, 1500];
+
 export const { config, css, getCssText, globalCss, styled, theme } = createStitches({
 	media: {
 		min0: '(min-width: 600px)',
@@ -36,7 +38,7 @@ export const { config, css, getCssText, globalCss, styled, theme } = createStitc
 			1: '1rem',
 			2: '2rem',
 			3: '3rem',
-			4: '3rem',
+			4: '4rem',
 			re1: '1vw',
 			re2: '4vw',
 			re3: '6vw',

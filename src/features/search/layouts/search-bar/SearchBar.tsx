@@ -39,6 +39,7 @@ export function SearchBar() {
 				margin: '0 auto',
 				display: 'flex',
 				alignItems: 'center',
+				marginTop: '$4',
 				paddingX: '1.5rem',
 				maxWidth: '50%',
 				border: '2px solid #6D6D6D',

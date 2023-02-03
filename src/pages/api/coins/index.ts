@@ -8,7 +8,6 @@ type ResponseSuccess = Array<CoinFetchData>;
 
 type ResponseData = ResponseError | ResponseSuccess;
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default async (req: NextApiRequest, res: NextApiResponse<ResponseData>) => {
 	if (req.method !== 'GET') {
 		return res.status(405).json({ message: `${req.method} not allowed. You can only make GET requests.` });

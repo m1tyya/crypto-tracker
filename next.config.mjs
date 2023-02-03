@@ -21,7 +21,7 @@ const nextConfig = {
 	reactStrictMode: true,
 	swcMinify: true,
 	webpack(config) {
-		config.experiments = { ...config.experiments, topLevelAwait: true };
+		config.experiments = { ...config.experiments };
 		config.module.rules.push({
 			issuer: { and: [/\.(js|ts|md)x?$/] },
 			test: /\.svg$/i,

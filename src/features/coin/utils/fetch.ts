@@ -6,7 +6,7 @@ export async function zodGet<TResponseSchema extends z.Schema>(
 	url: string,
 	responseSchema: TResponseSchema,
 ): Promise<z.infer<TResponseSchema>> {
-	const response = await axios<z.infer<typeof responseSchema>>(url, {
+	const response = await axios<z.infer<TResponseSchema>>(url, {
 		method: 'GET',
 	});
 

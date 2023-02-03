@@ -9,6 +9,7 @@ export function Container({ children }: Props) {
 	return (
 		<div
 			className={styles({
+				position: 'relative',
 				backgroundColor: '$bg',
 				color: '$white',
 				minHeight: '100vh',

@@ -1,21 +1,26 @@
 import { useQuery } from '@tanstack/react-query';
-import { CoinSchema } from 'prisma/zod';
+import { type ZodSchema, ZodError } from 'zod';
 
-import { FETCH_INTERVAL } from '../constants';
-import { CoinDataSchema } from '../schema';
 import { zodGet } from '../utils';
 
-export function useSavedCoinList() {
+export function useQueryDisabled(url: string, schema: ZodSchema) {
 	return useQuery({
-		queryFn: async () => await zodGet('/coins/saved', CoinSchema.array()),
-		queryKey: ['saved-coins', CoinSchema],
+		enabled: false,
+		queryFn: () => fetchData(url, schema),
+		queryKey: [url, schema],
 	});
 }
 
-export function useCoinData() {
-	return useQuery({
-		queryFn: async () => await zodGet('/coins', CoinDataSchema.array()),
-		queryKey: ['coin-data', CoinDataSchema],
-		refetchInterval: FETCH_INTERVAL,
-	});
+async function fetchData(url: string, schema: ZodSchema) {
+	let res;
+	try {
+		res = await zodGet(url, schema);
+	} catch (err) {
+		if (err instanceof ZodError) {
+			throw err.message;
+		}
+		throw err;
+	}
+
+	return res;
 }

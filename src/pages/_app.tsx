@@ -3,16 +3,25 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { type AppProps } from 'next/app';
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
-import { useRef } from 'react';
+import { useState } from 'react';
 
 import { Container } from '~/components/container';
 import { Navbar } from '~/layouts/navbar';
 import { globalStyles } from '~/styles';
 
-const queryClient = new QueryClient();
-
 function App({ Component, pageProps }: AppProps) {
-	const queryClient = useRef(new QueryClient());
+	// eslint-disable-next-line react/hook-use-state
+	const [queryClient] = useState(
+		new QueryClient({
+			defaultOptions: {
+				queries: {
+					refetchOnMount: false,
+					refetchOnReconnect: false,
+					refetchOnWindowFocus: false,
+				},
+			},
+		}),
+	);
 
 	return (
 		<>
@@ -22,7 +31,7 @@ function App({ Component, pageProps }: AppProps) {
 				<meta content='width=device-width, initial-scale=1' name='viewport' />
 				<title>App</title>
 			</Head>
-			<QueryClientProvider client={queryClient.current}>
+			<QueryClientProvider client={queryClient}>
 				<Hydrate state={pageProps.dehydratedState}>
 					<ReactQueryDevtools initialIsOpen={false} />
 					<SessionProvider session={pageProps.session}>

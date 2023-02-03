@@ -15,8 +15,8 @@ export function NavbarLinks() {
 	return (
 		<NavbarLinksStyled>
 			{
-				<NavbarElement hasSeparator position={{ paddingY: '$1' }}>
-					<NavbarLink isProtected url={apiUrl('/saved')}>
+				<NavbarElement hasSeparator={true} position={{ paddingY: '$1' }}>
+					<NavbarLink isProtected={true} url={apiUrl('/saved')}>
 						Saved
 					</NavbarLink>
 				</NavbarElement>

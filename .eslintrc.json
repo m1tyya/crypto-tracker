@@ -166,7 +166,7 @@
 			}
 		],
 		"react/hook-use-state": "warn",
-		"react/jsx-boolean-value": "warn",
+		"react/jsx-boolean-value": ["warn", "always"],
 		"react/jsx-fragments": ["warn", "syntax"],
 		"react/jsx-key": "warn",
 		"react/jsx-pascal-case": "warn",
@@ -217,10 +217,7 @@
 		"unicorn/number-literal-case": "warn",
 		"unicorn/prefer-array-some": "warn",
 		"unicorn/prefer-at": [
-			"warn",
-			{
-				"checkAllIndexAccess": true
-			}
+			"warn"
 		],
 		"unicorn/prefer-date-now": "warn",
 		"unicorn/prefer-default-parameters": "warn",

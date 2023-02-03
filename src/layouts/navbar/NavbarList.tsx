@@ -33,8 +33,8 @@ export function NavbarList({ isShown }: NavbarListProps) {
 				top: theme.sizes.navbarHeight,
 				width: '100%',
 				'@min1': {
+					backgroundColor: 'transparent',
 					alignItems: 'inherit',
-					backgroundColor: 'inherit',
 					display: 'flex',
 					flexDirection: 'row',
 					justifyContent: 'space-between',
