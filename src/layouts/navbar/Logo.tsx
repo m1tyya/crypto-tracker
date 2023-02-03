@@ -1,8 +1,8 @@
 import Link from 'next/link';
+import { LogoImage } from 'public/vectors';
 
 import { Vector } from '~/components/vector';
 import { styles } from '~/styles';
-import { LogoImage } from '~vectors';
 
 export function Logo() {
 	return (
@@ -13,7 +13,7 @@ export function Logo() {
 				flexDirection: 'row',
 			})}
 			href='/'>
-			<Vector props={{ width: '30', fill: '#ffffff' }} Svg={LogoImage} />
+			<Vector props={{ width: '30', fill: '#ffffff' }} Svg={LogoImage} title='Page logo' />
 			<span
 				className={styles({
 					fontSize: '2rem',

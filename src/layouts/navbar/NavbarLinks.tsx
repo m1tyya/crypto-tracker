@@ -1,7 +1,6 @@
 import { styled } from '~/styles';
 import { apiUrl } from '~/utils';
 
-import { NavbarElement } from './NavbarElement';
 import { NavbarLink } from './NavbarLink';
 
 const NavbarLinksStyled = styled('div', {
@@ -15,11 +14,9 @@ export function NavbarLinks() {
 	return (
 		<NavbarLinksStyled>
 			{
-				<NavbarElement hasSeparator={true} position={{ paddingY: '$1' }}>
-					<NavbarLink isProtected={true} url={apiUrl('/saved')}>
-						Saved
-					</NavbarLink>
-				</NavbarElement>
+				<NavbarLink hasSeparator={true} isProtected={true} position={{ paddingY: '$1' }} url={apiUrl('/saved')}>
+					Saved
+				</NavbarLink>
 			}
 		</NavbarLinksStyled>
 	);

@@ -1,7 +1,6 @@
 import { type PropsWithChildren } from 'react';
 
-import { INTER } from '~/constants';
-import { styles } from '~/styles';
+import { inter, styles } from '~/styles';
 
 type Props = PropsWithChildren;
 
@@ -13,7 +12,7 @@ export function Container({ children }: Props) {
 				backgroundColor: '$bg',
 				color: '$white',
 				minHeight: '100vh',
-				...INTER.style,
+				...inter.style,
 			})}>
 			{children}
 		</div>

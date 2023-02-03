@@ -19,13 +19,19 @@ const nextConfig = {
 		locales: ['en-US'],
 	},
 	reactStrictMode: true,
-	swcMinify: true,
 	webpack(config) {
 		config.experiments = { ...config.experiments };
 		config.module.rules.push({
 			issuer: { and: [/\.(js|ts|md)x?$/] },
 			test: /\.svg$/i,
-			use: ['@svgr/webpack'],
+			use: [
+				{
+					loader: '@svgr/webpack',
+					options: {
+						titleProp: true,
+					},
+				},
+			],
 		});
 
 		return config;

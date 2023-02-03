@@ -3,7 +3,6 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { Button } from '~/components/button';
 import { styles, theme } from '~/styles';
 
-import { NavbarElement } from './NavbarElement';
 import { NavbarLinks } from './NavbarLinks';
 
 type NavbarListProps = {
@@ -45,11 +44,9 @@ export function NavbarList({ isShown }: NavbarListProps) {
 				},
 			})}>
 			<NavbarLinks />
-			<NavbarElement position={{ paddingY: '$2' }}>
-				<Button onClick={handleAuth} variant={'outlined'}>
-					{isAuthenticated ? 'Logout' : 'Login'}
-				</Button>
-			</NavbarElement>
+			<Button onClick={handleAuth} position={{ paddingY: '$2' }} variant={'outlined'}>
+				{isAuthenticated ? 'Logout' : 'Login'}
+			</Button>
 		</div>
 	);
 }

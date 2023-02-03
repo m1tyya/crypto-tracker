@@ -6,12 +6,14 @@ import { type CSS } from '~/types';
 
 type Props = {
 	children: string;
+	hasSeparator: boolean;
 	isExternal?: boolean;
 	isProtected?: boolean;
+	position?: CSS;
 	url: URL;
 };
 
-export function NavbarLink({ children, isExternal = false, isProtected = false, url }: Props) {
+export function NavbarLink({ children, hasSeparator, isExternal = false, isProtected = false, position, url }: Props) {
 	const isAuthenticated = useSession().status === 'authenticated';
 	const linkStyles: CSS = {
 		'&:hover': {
@@ -25,17 +27,29 @@ export function NavbarLink({ children, isExternal = false, isProtected = false, 
 		fontWeight: '500',
 	};
 
+	const separator = hasSeparator ? (
+		<hr className={styles({ backgroundColor: 'hsl(228 18% 16%)', height: '1px' })} />
+	) : (
+		<></>
+	);
+
 	return (
 		<>
 			{isExternal ? (
-				<a className={styles({ ...linkStyles })} href={url.href}>
-					{children}
-				</a>
+				<>
+					<a className={styles({ ...linkStyles, ...position })} href={url.href}>
+						{children}
+					</a>
+					{separator}
+				</>
 			) : (
 				!(isProtected && !isAuthenticated) && (
-					<Link className={styles({ ...linkStyles })} href={url.pathname}>
-						{children}
-					</Link>
+					<>
+						<Link className={styles({ ...linkStyles, ...position })} href={url.pathname}>
+							{children}
+						</Link>
+						{separator}
+					</>
 				)
 			)}
 		</>
