@@ -1,64 +1,64 @@
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 generator zod {
-    provider = "zod-prisma-types"
-    output   = "./zod"
+  provider = "zod-prisma-types"
+  output   = "./zod"
 }
 
 model Account {
-    access_token      String? @db.Text
-    expires_at        Int?
-    id                String  @id @default(cuid())
-    id_token          String? @db.Text
-    provider          String
-    providerAccountId String
-    refresh_token     String? @db.Text
-    scope             String?
-    session_state     String?
-    token_type        String?
-    type              String
-    userId            String
+  access_token      String? @db.Text
+  expires_at        Int?
+  id                String  @id @default(cuid())
+  id_token          String? @db.Text
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  scope             String?
+  session_state     String?
+  token_type        String?
+  type              String
+  userId            String
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@unique([provider, providerAccountId])
+  @@unique([provider, providerAccountId])
 }
 
 model Session {
-    expires      DateTime
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId       String
+  expires      DateTime
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
 }
 
 model User {
-    accounts      Account[]
-    email         String?   @unique
-    emailVerified DateTime?
-    id            String    @id @default(cuid())
-    image         String?
-    name          String?
-    savedCoins    Coin[]
-    sessions      Session[]
+  accounts      Account[]
+  email         String?     @unique
+  emailVerified DateTime?
+  id            String      @id @default(cuid())
+  image         String?
+  name          String?
+  savedCoins    SavedCoin[]
+  sessions      Session[]
 }
 
 model VerificationToken {
-    expires    DateTime
-    identifier String
-    token      String   @unique
+  expires    DateTime
+  identifier String
+  token      String   @unique
 
-    @@unique([identifier, token])
+  @@unique([identifier, token])
 }
 
-model Coin {
-    id    String @id
-    users User[]
+model SavedCoin {
+  id    String @id
+  users User[]
 }

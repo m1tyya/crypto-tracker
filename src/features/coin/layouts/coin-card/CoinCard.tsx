@@ -1,20 +1,20 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import kyUniversal from 'ky-universal';
 import Image from 'next/image';
 import { useRef } from 'react';
 import { HiOutlinePlus, HiOutlineX } from 'react-icons/hi';
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
 
 import { Vector } from '~/components/vector';
-import { type CoinData } from '~/features/coin';
-import { useCoinStore } from '~/features/coin';
-import { axios } from '~/lib/axios';
+import { type Coin } from '~/features/coin';
+import { options } from '~/lib/ky';
 import { colors, styles, theme } from '~/styles';
 import { type PickRenameMulti } from '~/types';
 import { formatFixedPoint, formatThousandSeparators } from '~/utils';
 
 type GeneralProps = PickRenameMulti<
-	CoinData,
+	Coin,
 	{ current_price: 'currentPrice'; price_change_percentage_24h: 'priceChangePercentage24H' }
 >;
 
@@ -46,13 +46,12 @@ export function CoinCard({
 	priceChangePercentage24H,
 	symbol,
 }: Props) {
-	const { toggleSave } = useCoinStore();
 	const {
 		error,
 		isSuccess: isToggleSavedSuccess,
 		mutate: mutateSaved,
 	} = useMutation({
-		mutationFn: async (id: string) => await axios.post<boolean>(`/coins/saved/${id}`),
+		mutationFn: async (id: string) => await kyUniversal(`/coins/saved/${id}`, { ...options, method: 'post' }),
 	});
 	const activeGridAreas = useRef<string>(`
 		"info info"
@@ -68,7 +67,6 @@ export function CoinCard({
 	function handleToggle() {
 		try {
 			mutateSaved(id!);
-			toggleSave(id!, !filters?.isSaved);
 		} catch (err) {
 			if (err instanceof AxiosError) {
 			}
@@ -202,13 +200,7 @@ export function CoinCard({
 						backgroundColor: isLoaded ? 'inherit' : 'Silver',
 					})}>
 					{isLoaded && (
-						<Image
-							alt={`${name} Logo`}
-							fill={true}
-							sizes='100vw'
-							src={image}
-							style={{ objectFit: 'contain' }}
-						/>
+						<Image alt={`${name} Logo`} fill={true} sizes='100vw' src={image} style={{ objectFit: 'contain' }} />
 					)}
 				</div>
 			</div>
@@ -256,9 +248,7 @@ export function CoinCard({
 									fill: priceChangePercentage24H > 0 ? colors.success.value : colors.error.value,
 									width: '10',
 								}}
-								Svg={
-									priceChangePercentage24H > 0 ? MdOutlineKeyboardArrowUp : MdOutlineKeyboardArrowDown
-								}
+								Svg={priceChangePercentage24H > 0 ? MdOutlineKeyboardArrowUp : MdOutlineKeyboardArrowDown}
 							/>
 							<span
 								className={styles({

@@ -1,8 +1,7 @@
 import { type GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
-import { Crypto } from 'public/vectors';
+import { crypto } from 'public/images';
 
-import { Vector } from '~/components/vector';
 import { raleway, styles } from '~/styles';
 
 function Home() {
@@ -28,7 +27,15 @@ function Home() {
 					<span className={styles({ color: '#ECC32C' })}>Track</span> crypto prices with{' '}
 					<span className={styles({ color: '#DB511F' })}>Taste</span>
 				</h2>
-				<Vector position={{ width: 'max(30rem, 35%)', marginTop: '$3' }} Svg={Crypto} title='Crypto coins' />
+				<div
+					className={styles({
+						width: 'max(25rem, 33%)',
+						marginTop: '$3',
+					})}>
+					<picture>
+						<img src={crypto.src} width='100%' />
+					</picture>
+				</div>
 			</div>
 		</>
 	);

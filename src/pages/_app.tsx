@@ -1,28 +1,15 @@
-import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Hydrate } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { type AppProps } from 'next/app';
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
-import { useState } from 'react';
 
 import { Container } from '~/components/container';
 import { Navbar } from '~/layouts/navbar';
 import { globalStyles } from '~/styles';
+import { trpc } from '~/utils';
 
-function App({ Component, pageProps }: AppProps) {
-	// eslint-disable-next-line react/hook-use-state
-	const [queryClient] = useState(
-		new QueryClient({
-			defaultOptions: {
-				queries: {
-					refetchOnMount: false,
-					refetchOnReconnect: false,
-					refetchOnWindowFocus: false,
-				},
-			},
-		}),
-	);
-
+function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 	return (
 		<>
 			{globalStyles()}
@@ -31,19 +18,17 @@ function App({ Component, pageProps }: AppProps) {
 				<meta content='width=device-width, initial-scale=1' name='viewport' />
 				<title>App</title>
 			</Head>
-			<QueryClientProvider client={queryClient}>
-				<Hydrate state={pageProps.dehydratedState}>
-					<ReactQueryDevtools initialIsOpen={false} />
-					<SessionProvider session={pageProps.session}>
-						<Container>
-							<Navbar />
-							<Component {...pageProps} />
-						</Container>
-					</SessionProvider>
-				</Hydrate>
-			</QueryClientProvider>
+			<Hydrate state={pageProps.dehydratedState}>
+				<ReactQueryDevtools initialIsOpen={false} />
+				<SessionProvider session={session}>
+					<Container>
+						<Navbar />
+						<Component {...pageProps} />
+					</Container>
+				</SessionProvider>
+			</Hydrate>
 		</>
 	);
 }
 
-export default App;
+export default trpc.withTRPC(App);

@@ -1,22 +1,15 @@
 import { type NextApiRequest, type NextApiResponse } from 'next';
-import { getToken } from 'next-auth/jwt';
 
-import { prisma } from '~/lib/prisma';
+import { getServerAuthSession, prisma } from '~/server';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function create(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method !== 'GET') {
 		res.status(405).end('Only GET requests allowed.');
 	}
 
-	const token = await getToken({ req });
-	if (!token) {
+	const session = await getServerAuthSession({ req, res });
+	if (!session) {
 		res.status(401).end('Login to access coin data');
-
-		return;
-	}
-
-	if (!token?.sub) {
-		res.status(500).end('Server error. Try again later.');
 
 		return;
 	}
@@ -25,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		(
 			await prisma.user.findUniqueOrThrow({
 				where: {
-					id: token.sub,
+					id: session.user.id,
 				},
 				select: {
 					savedCoins: true,

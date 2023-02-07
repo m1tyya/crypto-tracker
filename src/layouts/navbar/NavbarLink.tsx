@@ -10,7 +10,7 @@ type Props = {
 	isExternal?: boolean;
 	isProtected?: boolean;
 	position?: CSS;
-	url: URL;
+	url: string;
 };
 
 export function NavbarLink({ children, hasSeparator, isExternal = false, isProtected = false, position, url }: Props) {
@@ -37,7 +37,7 @@ export function NavbarLink({ children, hasSeparator, isExternal = false, isProte
 		<>
 			{isExternal ? (
 				<>
-					<a className={styles({ ...linkStyles, ...position })} href={url.href}>
+					<a className={styles({ ...linkStyles, ...position })} href={url}>
 						{children}
 					</a>
 					{separator}
@@ -45,7 +45,7 @@ export function NavbarLink({ children, hasSeparator, isExternal = false, isProte
 			) : (
 				!(isProtected && !isAuthenticated) && (
 					<>
-						<Link className={styles({ ...linkStyles, ...position })} href={url.pathname}>
+						<Link className={styles({ ...linkStyles, ...position })} href={url}>
 							{children}
 						</Link>
 						{separator}

@@ -1,7 +1,7 @@
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { ZodError } from 'zod';
 
-import { type CoinFetchData, CoinDataSchema, URL } from '~/features/coin';
+import { type CoinFetchData, CoinFetchSchema, URL } from '~/features/coin';
 import { type ResponseError } from '~/types';
 
 type ResponseSuccess = Array<CoinFetchData>;
@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<ResponseData>) =
 	const coinData = (await (await fetch(URL)).json()) as Array<CoinFetchData>;
 
 	try {
-		CoinDataSchema.parse(coinData.at(0));
+		CoinFetchSchema.parse(coinData.at(0));
 
 		return res.json(coinData);
 	} catch (err) {

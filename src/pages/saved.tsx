@@ -1,25 +1,21 @@
 import { type GetServerSideProps } from 'next';
-import { unstable_getServerSession } from 'next-auth';
 import { useRef } from 'react';
 
 import { type Filter, FilteredCards } from '~/features/coin';
-import { SearchBar } from '~/features/search';
-
-import { authOptions } from './api/auth/[...nextauth]';
+import { getServerAuthSession } from '~/server';
 
 function Saved() {
 	const filters = useRef<Set<Filter>>(new Set(['isFound', 'isSaved']));
 
 	return (
 		<>
-			<SearchBar />
 			<FilteredCards pageFilters={filters.current} />
 		</>
 	);
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-	const session = await unstable_getServerSession(req, res, authOptions);
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+	const session = await getServerAuthSession(ctx);
 	if (!session) {
 		return {
 			redirect: {

@@ -1,5 +1,3 @@
-import './src/schemas/env.mjs';
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	compiler: {

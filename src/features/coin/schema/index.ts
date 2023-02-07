@@ -4,7 +4,7 @@ import { roundToDecimals } from '~/utils';
 
 export const FilterSchema = z.enum(['isFound', 'isSaved']);
 
-export const CoinDataSchema = z.object({
+export const CoinFetchSchema = z.object({
 	current_price: z.number().transform((num) => roundToDecimals(num, 2)),
 	id: z.string(),
 	image: z.string().url(),
@@ -20,4 +20,4 @@ export const CoinFiltersSchema = z
 	})
 	.strict();
 
-export const CoinSchema = CoinDataSchema.extend({ filters: CoinFiltersSchema });
+export const CoinSchema = CoinFetchSchema.extend({ filters: CoinFiltersSchema });

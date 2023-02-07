@@ -38,5 +38,5 @@
 		"target": "es2022"
 	},
 	"exclude": ["**/*.cy.ts", "dist", "node_modules"],
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "**/*.mjs", "src/utils/colors.js"]
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "**/*.mjs", "**/*.js", "**/*.cjs"]
 }
