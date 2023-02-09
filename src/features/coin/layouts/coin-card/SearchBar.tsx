@@ -1,26 +1,23 @@
-import { type MutableRefObject, forwardRef } from 'react';
+import { atom, useSetAtom } from 'jotai';
+import { useForm } from 'react-hook-form';
 import { BsSearch } from 'react-icons/bs';
 
 import { Vector } from '~/components/vector';
-import { FETCH_INTERVAL } from '~/features/coin';
 import { styles } from '~/styles';
-import { trpc } from '~/utils';
 
-type Props = {
-	searchQueryRef: MutableRefObject<HTMLInputElement | undefined>;
-};
+type Props = {};
 
-export const SearchBar = forwardRef(({ searchQueryRef }: Props) => {
-	const {
-		data: coinData,
-		fetchStatus: fetchStatusCoinData,
-		status: statusCoinData,
-	} = trpc.coin.coinMarketData.useQuery(undefined, { staleTime: FETCH_INTERVAL });
-	const {
-		data: savedCoinList,
-		fetchStatus: fetchStatusSavedCoinList,
-		status: statusSavedCoinList,
-	} = trpc.coin.savedCoinList.useQuery();
+export const searchAtom = atom('');
+
+export function SearchBar({}: Props) {
+	const setSearchQuery = useSetAtom(searchAtom);
+	const { register, watch } = useForm({
+		defaultValues: {
+			search: '',
+		},
+	});
+
+	setSearchQuery(() => watch('search'));
 
 	return (
 		<div
@@ -45,11 +42,10 @@ export const SearchBar = forwardRef(({ searchQueryRef }: Props) => {
 					flex: '1',
 				})}
 				id='search'
-				name='search'
 				placeholder='Search for coins'
-				ref={searchQueryRef as MutableRefObject<HTMLInputElement>}
 				type='text'
+				{...register('search')}
 			/>
 		</div>
 	);
-});
+}

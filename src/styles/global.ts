@@ -42,4 +42,9 @@ export const globalStyles = globalCss({
 	'input:focus': {
 		outline: 'unset',
 	},
+	img: {
+		maxInlineSize: '100%',
+		blockSize: 'auto',
+		objectFit: 'cover',
+	},
 });

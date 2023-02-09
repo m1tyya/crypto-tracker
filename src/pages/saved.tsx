@@ -5,7 +5,7 @@ import { type Filter, FilteredCards } from '~/features/coin';
 import { getServerAuthSession } from '~/server';
 
 function Saved() {
-	const filters = useRef<Set<Filter>>(new Set(['isFound', 'isSaved']));
+	const filters = useRef<Set<Filter>>(new Set(['isSaved']));
 
 	return (
 		<>

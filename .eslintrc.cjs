@@ -251,6 +251,9 @@ module.exports = defineConfig({
 		yoda: 'warn',
 	},
 	settings: {
+		'import/parsers': {
+			'@typescript-eslint/parser': ['.ts', '.tsx'],
+		},
 		react: {
 			version: 'detect',
 		},

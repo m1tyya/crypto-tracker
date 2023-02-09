@@ -5,7 +5,7 @@ import { type Filter, FilteredCards } from '~/features/coin';
 import { getServerAuthSession } from '~/server';
 
 function Dashboard() {
-	const pageFilters = useRef<Set<Filter>>(new Set(['isFound']));
+	const pageFilters = useRef<Set<Filter>>(new Set([]));
 
 	return (
 		<>

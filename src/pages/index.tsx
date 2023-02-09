@@ -1,7 +1,7 @@
 import { type GetServerSideProps } from 'next';
-import { getToken } from 'next-auth/jwt';
 import { crypto } from 'public/images';
 
+import { getServerAuthSession } from '~/server';
 import { raleway, styles } from '~/styles';
 
 function Home() {
@@ -33,7 +33,7 @@ function Home() {
 						marginTop: '$3',
 					})}>
 					<picture>
-						<img src={crypto.src} width='100%' />
+						<img sizes='' src={crypto.src} width='300vw' />
 					</picture>
 				</div>
 			</div>
@@ -41,9 +41,9 @@ function Home() {
 	);
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-	const token = await getToken({ req });
-	if (token) {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+	const session = await getServerAuthSession(ctx);
+	if (session) {
 		return {
 			redirect: {
 				destination: '/dashboard',

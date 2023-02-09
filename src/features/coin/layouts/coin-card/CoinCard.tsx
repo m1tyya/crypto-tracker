@@ -1,14 +1,11 @@
-import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import kyUniversal from 'ky-universal';
 import Image from 'next/image';
 import { useRef } from 'react';
 import { HiOutlinePlus, HiOutlineX } from 'react-icons/hi';
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
+import { ZodError } from 'zod';
 
 import { Vector } from '~/components/vector';
-import { type Coin } from '~/features/coin';
-import { options } from '~/lib/ky';
+import { type Coin, useCoinsSavedPost } from '~/features/coin';
 import { colors, styles, theme } from '~/styles';
 import { type PickRenameMulti } from '~/types';
 import { formatFixedPoint, formatThousandSeparators } from '~/utils';
@@ -46,13 +43,7 @@ export function CoinCard({
 	priceChangePercentage24H,
 	symbol,
 }: Props) {
-	const {
-		error,
-		isSuccess: isToggleSavedSuccess,
-		mutate: mutateSaved,
-	} = useMutation({
-		mutationFn: async (id: string) => await kyUniversal(`/coins/saved/${id}`, { ...options, method: 'post' }),
-	});
+	const { mutate: toggleSaved, status: statusToggleSaved } = useCoinsSavedPost();
 	const activeGridAreas = useRef<string>(`
 		"info info"
 		"market market"
@@ -66,9 +57,9 @@ export function CoinCard({
 
 	function handleToggle() {
 		try {
-			mutateSaved(id!);
+			toggleSaved({ coinId: id!, isSaved: filters!.isSaved });
 		} catch (err) {
-			if (err instanceof AxiosError) {
+			if (err instanceof ZodError) {
 			}
 		}
 	}
@@ -200,7 +191,14 @@ export function CoinCard({
 						backgroundColor: isLoaded ? 'inherit' : 'Silver',
 					})}>
 					{isLoaded && (
-						<Image alt={`${name} Logo`} fill={true} sizes='100vw' src={image} style={{ objectFit: 'contain' }} />
+						<Image
+							alt={`${name} Logo`}
+							fill={true}
+							priority={true}
+							sizes='50'
+							src={image}
+							style={{ objectFit: 'cover' }}
+						/>
 					)}
 				</div>
 			</div>

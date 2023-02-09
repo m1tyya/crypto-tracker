@@ -21,6 +21,7 @@
  * This is where the tRPC API is initialized, connecting the context and
  * transformer.
  */
+import { type PrismaClient } from '@prisma/client';
 import { initTRPC, TRPCError } from '@trpc/server';
 import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { type Session } from 'next-auth';
@@ -33,8 +34,13 @@ type CreateContextOptions = {
 	session: Session | null;
 };
 
-const createInnerTrpcContext = (opts: CreateContextOptions) => ({
-	session: opts.session,
+type InnerContext = {
+	prisma: PrismaClient;
+	session: Session | null;
+};
+
+const createInnerTrpcContext = ({ session }: CreateContextOptions): InnerContext => ({
+	session,
 	prisma,
 });
 
@@ -64,7 +70,6 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
 
 	return next({
 		ctx: {
-			// infers the `session` as non-nullable
 			session: { ...ctx.session, user: ctx.session.user },
 		},
 	});
