@@ -254,8 +254,5 @@ module.exports = defineConfig({
 		'import/parsers': {
 			'@typescript-eslint/parser': ['.ts', '.tsx'],
 		},
-		react: {
-			version: 'detect',
-		},
 	},
 });

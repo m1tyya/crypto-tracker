@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import { useRef } from 'react';
-import { HiOutlinePlus, HiOutlineX } from 'react-icons/hi';
 import { MdOutlineKeyboardArrowDown, MdOutlineKeyboardArrowUp } from 'react-icons/md';
-import { ZodError } from 'zod';
 
 import { Vector } from '~/components/vector';
-import { type Coin, useCoinsSavedPost } from '~/features/coin';
+import { type Coin } from '~/features/coin';
 import { colors, styles, theme } from '~/styles';
 import { type PickRenameMulti } from '~/types';
 import { formatFixedPoint, formatThousandSeparators } from '~/utils';
+
+import { SavingButton } from './buttons/SaveButton';
 
 type GeneralProps = PickRenameMulti<
 	Coin,
@@ -43,7 +43,6 @@ export function CoinCard({
 	priceChangePercentage24H,
 	symbol,
 }: Props) {
-	const { mutate: toggleSaved, status: statusToggleSaved } = useCoinsSavedPost();
 	const activeGridAreas = useRef<string>(`
 		"info info"
 		"market market"
@@ -53,15 +52,6 @@ export function CoinCard({
 			"actions actions"
 			${activeGridAreas.current}
 		`;
-	}
-
-	function handleToggle() {
-		try {
-			toggleSaved({ coinId: id!, isSaved: filters!.isSaved });
-		} catch (err) {
-			if (err instanceof ZodError) {
-			}
-		}
 	}
 
 	return (
@@ -97,24 +87,7 @@ export function CoinCard({
 					})}>
 					{isLoaded && (
 						<>
-							<button
-								className={styles({
-									visibility: 'hidden',
-									size: '3rem',
-									borderRadius: '1rem',
-									backgroundColor: '#1C1C1C',
-								})}
-								onClick={handleToggle}
-								title={filters.isSaved ? 'Unsave' : 'Save'}>
-								<Vector
-									position={{
-										display: 'block',
-										margin: '0 auto',
-										color: 'white',
-									}}
-									Svg={filters.isSaved ? HiOutlineX : HiOutlinePlus}
-								/>
-							</button>
+							<SavingButton coinId={id} isSaved={filters.isSaved} />
 						</>
 					)}
 				</div>
@@ -142,7 +115,7 @@ export function CoinCard({
 							overflow: 'hidden',
 							borderRadius: '.8rem',
 							backgroundColor: isLoaded ? 'inherit' : 'Silver',
-							height: '$$fontSize',
+							height: 'calc($$fontSize + 1rem)',
 							fontSize: '$$fontSize',
 							width: isLoaded ? 'auto' : '60%',
 						})}>
