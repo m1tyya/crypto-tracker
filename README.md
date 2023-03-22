@@ -1,4 +1,4 @@
-<h1 align='center'>Crypto prices tracker</h1>
+<h1 align='center'>PriMo | Crypto Prices Tracker</h1>
 
 ![App main page](./public/app.png)
 
